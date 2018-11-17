@@ -1,0 +1,7 @@
+node_modules
+/errorShots
+/allure-results
+/allure-report
+/junit-results
+.idea
+/screenshots
