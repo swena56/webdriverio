@@ -3,5 +3,5 @@ node_modules
 /allure-results
 /allure-report
 /junit-results
-.idea
+.idea/
 /screenshots
