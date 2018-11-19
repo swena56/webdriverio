@@ -19,9 +19,16 @@ describe('google search', function () {
 		browser.pause(1000);
 		browser.keys("Enter");
 		console.log(browser.getUrl());
-		browser.pause(5000);
+		//browser.pause(5000);
 	});
 
-	it('is logged in');
+	it.only('is logged in', () =>{
+		google.loadPage();
+		google.login();
+		browser.pause(1000);
+		//input[contains(@name,’tn’)]
+		//expect('//input[contains(@type, email")]').to.be.there();
+		
+	});
 
 });

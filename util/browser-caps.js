@@ -28,6 +28,7 @@ const CAP_LIST = {
 		},
 		chromeOptions: {
 			args: [
+				'--headless',
 				//'--use-mobile-user-agent',
 				'--incognito',
 				//--install-chrome-app
@@ -38,6 +39,8 @@ const CAP_LIST = {
 				'--no-sandbox' ]
 		}
 	},
+
+	phantomjs: { browserName: 'phantomjs' },
 
 	//Windows
 	Windows10_Chrome_v68: {

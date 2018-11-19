@@ -21,6 +21,7 @@ let config = {
 	baseUrl: process.env.BASE_URL || 'https://www.google.com',
 	services: [
 		'visual-regression',
+		'phantomjs',
 		//'selenium-standalone',
 		//'sauce',
 	],
@@ -50,6 +51,14 @@ let config = {
 	},
 	maxInstances: 1,
 	capabilities: devices,
+	suites: {
+		google: [
+			'./test/google/search.spec.js',
+		],
+		microsoft: [
+			'./test/microsoft/microsoft.spec.js',
+		]
+	},
 	sync: true,
 	logLevel: 'error', //silent | verbose | command | data | result | error
 	coloredLogs: true,

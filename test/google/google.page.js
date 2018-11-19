@@ -5,6 +5,7 @@ const _elements = {
 	search: 'input[title="Search"]',
 	feeling_luck: "input[value*=Lucky]",
 	submit: "input[value*=Google Search]",
+	sign_button: '*=Sign in',
 };
 
 export default class Google extends BasePage {
@@ -39,5 +40,10 @@ export default class Google extends BasePage {
 		if( items.length ){
 			items[0].click();
 		}
+	}
+
+	login(){
+		browser.$(_elements.sign_button).click();
+		console.log(browser.getUrl());
 	}
 }
