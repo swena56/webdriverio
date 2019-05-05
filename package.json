@@ -10,7 +10,12 @@
     "clean": "rm -rf allure-results",
     "report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
     "devtools": "wdio wdio.devtools.conf.js --mochaOpts.grep=@both",
-    "selenium:install": "selenium-standalone install"
+    "selenium:install": "selenium-standalone install",
+    "export:var": "export TESTVAR=45",
+    "view-selenium-logs": "touch selenium-standalone.txt; xterm -e 'tail -f selenium-standalone.txt' &",
+    "install:chromedriver73": "perl -pe \"s/CHROME_DRIVER/'$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_73)'/\" conf/default-config.js > node_modules/selenium-standalone/lib/default-config.js",
+    "install:chromedriver74": "perl -pe \"s/CHROME_DRIVER/'$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_74)'/\" conf/default-config.js > node_modules/selenium-standalone/lib/default-config.js",
+    "install:chromedriver75": "perl -pe \"s/CHROME_DRIVER/'$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_75)'/\" conf/default-config.js > node_modules/selenium-standalone/lib/default-config.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +28,7 @@
     "@types/expect": "^1.20.3",
     "@wdio/cli": "^5.8.1",
     "allure-commandline": "^2.4.1",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "mocha-tags": "^1.0.1",
     "webdriverio": "^5.8.1",
     "xpath-to-css": "^1.0.3"
@@ -41,7 +46,6 @@
     "@wdio/selenium-standalone-service": "^5.8.0",
     "@wdio/spec-reporter": "^5.8.0",
     "@wdio/sync": "^5.8.1",
-    "wdio-chromedriver-service": "^5.0.1",
     "wdio-intercept-service": "^3.0.2",
     "wdio-video-reporter": "^1.3.0"
   },

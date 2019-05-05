@@ -72,5 +72,30 @@ exports.configure = function (browser) {
                 window.highlighted = []
             }
         })
-    })
+    });
+
+    /**
+    * sets the web browser position, either left or right, based on personal config "browserPosition" setting
+    * @param {String} position right or left
+    * @return {Promise}
+    */
+   browser.addCommand('reposition', position => {
+      let results = browser.execute(function() {
+         return {
+            width: window.screen.availWidth,
+            height: window.screen.availHeight
+         };
+      });
+
+      const screenSize = results.value;
+      return browser
+         .windowHandleSize({
+            width: screenSize.width / 2,
+            height: screenSize.height
+         })
+         .windowHandlePosition({
+            x: position === 'right' ? screenSize.width / 2 : 0,
+            y: 0
+         })
+   });
 };

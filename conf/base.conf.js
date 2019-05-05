@@ -15,16 +15,24 @@ if( process.env.EXCLUDES ){
 	excludes = excludes.map((o)=> `./${o}`);
 }
 
+const video = require('wdio-video-reporter');
+
 exports.config = {
 	runner: 'local',
-	baseUrl: process.env.BASE_URL || 'http://localhost',
+	baseUrl: process.env.BASE_URL || 'https://webdriver.io/docs/api.html',
 	exclude: excludes,
 	services:[],
 	specs: [
         process.env.SPECS || './test/**/*.spec.js'
     ],
 	//reporters: ['dot','spec','junit','allure','video'],
-	reporters: ['spec'],
+	reporters: ['spec',
+	[video, {
+	  outputDir:'/',
+      saveAllVideos: false,       // If true, also saves videos for successful test cases
+      videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+    }],
+    ],
 	logLevel: process.env.LOG_LEVEL || 'silent',
     bail: 0,
     
@@ -40,7 +48,7 @@ exports.config = {
         ui: 'bdd',
         timeout: 99999999,
     },
-    
+
     filesToWatch: [
         './test/misc/*.spec.js'
     ],

@@ -17,11 +17,16 @@ if [ ! -f "node_modules/.bin/selenium-standalone" ]; then
 	npm install selenium-standalone
 fi
 
-./node_modules/.bin/selenium-standalone install --version=3.9.1 --drivers.chrome.version=2.45
+pkill selenium-standalone
+pkill chromedriver
+
+export CHROME_DRIVER="$(curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_74)"
+
+./node_modules/.bin/selenium-standalone install --version=3.9.1 --drivers.chrome.version=$CHROME_DRIVER
 
 SELENIUM_JAR="$(pwd)/node_modules/selenium-standalone/.selenium/selenium-server/3.9.1-server.jar"
 GECKO="$(pwd)/node_modules/selenium-standalone/.selenium/geckodriver/0.23.0-x64-geckodriver"
-CHROME_DRIVER="$(pwd)/node_modules/selenium-standalone/.selenium/chromedriver/2.45-x64-chromedriver"
+CHROME_DRIVER="$(pwd)/node_modules/selenium-standalone/.selenium/chromedriver/${CHROME_DRIVER}-x64-chromedriver"
 
 { 
 
