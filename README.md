@@ -6,3 +6,5 @@
 + allure 
 + highlight
 + clean up repl
++ devtools
++ eslint

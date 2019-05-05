@@ -14,7 +14,7 @@ exports.configure = function (browser) {
 
 	require("@babel/register");
 
-	global.microsoft = require('../test/page-objects/microsoft.page');
+	//global.microsoft = require('../test/page-objects/microsoft.page');
 
 	browser.addCommand('highlight', function(selector, color='red') {
 

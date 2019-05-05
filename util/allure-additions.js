@@ -175,3 +175,30 @@ exports.addScreenShot = function(screenShotDir, isFullDocument=false) {
 		`, "text/html");
 	}
 };
+
+/**
+ * Adds an allure attachment containing an easy to read json dump of the live config used.
+ */
+exports.addLiveConfig = function(title='Live config') {
+
+	const liveConfig = browser.execute(function () {
+		return window.liveConfig;
+	});
+
+	if( liveConfig && liveConfig.value ){
+
+		reporter.createAttachment(title,
+			`<pre>${JSON.stringify(liveConfig.value, null, '\t')}</pre>`,
+			"text/html");
+	} else {
+		throw new Error('Unable to obtain a live config');
+	}
+};
+
+exports.addDescription = function(message, skipTest=false){
+	reporter.addDescription(message);
+	if( skipTest ){
+		let Pending = require('../node_modules/mocha/lib/pending.js');
+		throw new Pending(`${message}`);
+	}
+};
