@@ -1,11 +1,9 @@
-import Microsoft from "./microsoft.page";
+import Microsoft from "./../page-objects/microsoft.page";
 
 describe('Microsoft', function () {
 
-	const microsoft = new Microsoft();
-
 	it('should login', function () {
-		microsoft.loadPage();
-		microsoft.login();
+		Microsoft.loadPage();
+		Microsoft.login();
 	});
 });
