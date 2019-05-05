@@ -1,5 +1,4 @@
-const MIN_WAIT_TIME= 10000
-const MAX_WAIT_TIME= 360000
+const WAIT_TIME = 180000;
 
 export default class BasePage {
 
@@ -8,11 +7,16 @@ export default class BasePage {
         this.waitForPageLoad();
 	}
 
-	waitForPageLoad() {
-		var DOMState='';
-		browser.waitUntil(function () {
-			DOMState = browser.execute('return document.readyState');
-			return DOMState.value === 'complete' || !DOMState.value
-		}, MAX_WAIT_TIME,'Page not loaded completely within 180 seconds');
+	waitForPageLoad(extraWaitTime=0) {
+		browser.pause(5000);
+		browser.waitUntil(
+			() => browser.execute('return document.readyState') === 'complete', 
+			WAIT_TIME,
+			`Page not loaded completely within ${WAIT_TIME/1000} seconds`
+		);
+
+		if( extraWaitTime > 0 ){
+			browser.pause(extraWaitTime);
+		}
 	}
 }

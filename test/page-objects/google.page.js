@@ -10,23 +10,19 @@ import BasePage from "./base.page";
 
 class Google extends BasePage {
 
-	get _(){
-		return _elements;
-	}
-	
 	loadPage(){
 		super.loadPage('https://www.google.com');
 	}
 
 	search(forText){
-		// if(!forText){
-		// 	throw new Error('need search string to search for in parameter 1');
-		// }
+		if(!forText){
+			throw new Error('need search string to search for in parameter 1');
+		}
 
-		// expect(_elements.search,"Search input field did not exist").to.be.there();
-		// browser.setValue(_elements.search,'test');
-		// expect(browser.getValue(_elements.search),"Does not have the expected text").to.equal(forText);
-		// browser.keys("Enter");
+		//expect(_elements.search,"Search input field did not exist").to.be.there();
+		//browser.setValue(_elements.search,'test');
+		//expect(browser.getValue(_elements.search),"Does not have the expected text").to.equal(forText);
+		browser.keys("Enter");
 	}
 
 	clickFirstItem(){
@@ -37,8 +33,8 @@ class Google extends BasePage {
 	}
 
 	login(){
-		// browser.$(_elements.sign_button).click();
-		// console.log(browser.getUrl());
+		//$(_elements.sign_button).click();
+		//console.log(browser.getUrl());
 	}
 }
 

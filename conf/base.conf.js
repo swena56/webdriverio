@@ -15,15 +15,6 @@ if( process.env.EXCLUDES ){
 	excludes = excludes.map((o)=> `./${o}`);
 }
 
-let reporterOptions = {
-	allure: {
-		outputDir: 'allure-results',
-		//disableWebdriverStepsReporting: true,
-		disableWebdriverScreenshotsReporting: true,
-	},
-	junit: {outputDir: 'junit-results'}
-};
-
 exports.config = {
 	runner: 'local',
 	baseUrl: process.env.BASE_URL || 'http://localhost',
@@ -33,9 +24,8 @@ exports.config = {
         process.env.SPECS || './test/**/*.spec.js'
     ],
 	//reporters: ['dot','spec','junit','allure','video'],
-	reporters: ['spec','allure','dot', 'junit', 'video'],
-	reporterOptions: reporterOptions,
-	logLevel: 'silent',
+	reporters: ['spec'],
+	logLevel: process.env.LOG_LEVEL || 'silent',
     bail: 0,
     
     waitforTimeout: 10000,
@@ -50,8 +40,9 @@ exports.config = {
         ui: 'bdd',
         timeout: 99999999,
     },
+    
     filesToWatch: [
-        './test/misc/*.js'
+        './test/misc/*.spec.js'
     ],
 
 	screenshotPath: './errorShots/',
@@ -63,6 +54,7 @@ exports.config = {
 	onPrepare: function() {
 		console.log(`Starting: ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}`);
 	},
+
 	onComplete: function() {
 		console.log(`Done: ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}`);
 	},

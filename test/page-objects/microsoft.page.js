@@ -9,12 +9,9 @@ class MicrosoftPage extends BasePage {
 		super.loadPage('https://www.microsoft.com');
 	}
 
-	login(){
+	login(username,password){
 
-		// if( process.env.MICROSOFT_USERNAME && process.env.MICROSOFT_PASSWORD ){
-
-		// }
-		//browser.debug();
+		
 	}
 }
 

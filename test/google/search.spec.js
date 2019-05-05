@@ -1,15 +1,15 @@
-//import Google from "./google.page";
+import Google from "./../page-objects/google.page";
 
 describe('google search', function () {
 
 	it('should search for test and pick first page', function () {
-		// Google.loadPage();
+		Google.loadPage();
 		// Google.search('test');
 		// Google.clickFirstItem();
 	});
 
 	it('feeling lucky',()=>{
-		// Google.loadPage();
+		Google.loadPage();
 		// browser.click(Google._.search);
 		// browser.keys("Tab");
 		// browser.keys("Tab");
@@ -20,13 +20,12 @@ describe('google search', function () {
 		// //browser.pause(5000);
 	});
 
-	it.only('is logged in', () =>{
-		// Google.loadPage();
+	it('is logged in', () =>{
+		Google.loadPage();
 		// Google.login();
 		// browser.pause(1000);
 		//input[contains(@name,’tn’)]
 		//expect('//input[contains(@type, email")]').to.be.there();
-		
 	});
 
 });

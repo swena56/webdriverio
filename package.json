@@ -25,7 +25,8 @@
     "allure-commandline": "^2.4.1",
     "chai": "^4.1.2",
     "mocha-tags": "^1.0.1",
-    "webdriverio": "^5.8.1"
+    "webdriverio": "^5.8.1",
+    "xpath-to-css": "^1.0.3"
   },
   "devDependencies": {
     "@wdio/allure-reporter": "^5.7.11",
