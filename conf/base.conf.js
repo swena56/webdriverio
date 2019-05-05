@@ -1,3 +1,5 @@
+const video = require('wdio-video-reporter');
+
 let excludes = [];
 if( process.env.EXCLUDES ){
 
@@ -15,45 +17,45 @@ if( process.env.EXCLUDES ){
 	excludes = excludes.map((o)=> `./${o}`);
 }
 
-const video = require('wdio-video-reporter');
+let specs = [ process.env.SPECS || './test/**/*.spec.js' ];
+if( process.env.SEARCH ){
+    let glob = require( 'glob' );
+    let tests = glob.sync( 'test/**/*.spec.js' );
+    specs = tests.filter( 
+        o => o.toLowerCase().includes(process.env.SEARCH.toLowerCase())
+    );
+}
 
 exports.config = {
 	runner: 'local',
 	baseUrl: process.env.BASE_URL || 'https://webdriver.io/docs/api.html',
 	exclude: excludes,
 	services:[],
-	specs: [
-        process.env.SPECS || './test/**/*.spec.js'
-    ],
-	//reporters: ['dot','spec','junit','allure','video'],
+	specs: specs,
+	framework: 'mocha',
+    //reporters: ['dot','spec','junit','allure','video'],
 	reporters: ['spec',
-	[video, {
-	  outputDir:'/',
-      saveAllVideos: false,       // If true, also saves videos for successful test cases
-      videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
-    }],
+	// [ video, {
+	//   outputDir:'/',
+ //      saveAllVideos: false,       // If true, also saves videos for successful test cases
+ //      videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+ //    }],
     ],
 	logLevel: process.env.LOG_LEVEL || 'silent',
     bail: 0,
-    
-    waitforTimeout: 10000,
-    connectionRetryTimeout: 90000,
-    connectionRetryCount: 3,
-    framework: 'mocha',
-    specFileRetries: 1,
-    
-    reporters: ['spec'],
+    waitforTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT) || 10000,
+    connectionRetryTimeout: parseInt(process.env.CONN_RETRY_TIMEOUT) || 90000,
+    connectionRetryCount: parseInt(process.env.CONN_RETRY_COUNT) || 3,
+    specFileRetries: parseInt(process.env.SPEC_RETRY_COUNT) || 1,
     maxInstances: parseInt(process.env.MAX_INSTANCES) || 10 ,
     mochaOpts: {
         ui: 'bdd',
         timeout: 99999999,
     },
-
     filesToWatch: [
         './test/misc/*.spec.js'
     ],
-
-	screenshotPath: './errorShots/',
+	screenshotPath: process.env.SCREENSHOT_PATH || './errorShots/',
 	
 	before: function (capabilities, specs) {
         require('./prepare-browser').configure(browser);

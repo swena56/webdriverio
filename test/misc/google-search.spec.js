@@ -4,7 +4,7 @@ describe('google search', function () {
 
 	it('should search for test and pick first page', function () {
 		Google.loadPage();
-		// Google.search('test');
+		Google.search('test');
 		// Google.clickFirstItem();
 	});
 

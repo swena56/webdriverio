@@ -8,3 +8,4 @@
 + clean up repl
 + devtools
 + eslint
++ text search for tests
