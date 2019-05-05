@@ -2,46 +2,6 @@
 const CAP_LIST = {
 	//------------------------ LV ------------------------
 
-	default: {
-		browserName: 'chrome',
-		platform: 'macOS 10.12',
-		version: 'latest',
-		build: `MAC_CHROME - ${process.env.USER} Local Environment`,
-		locationContextEnabled: true,
-		pageLoadStrategy: 'normal',
-		acceptSslCerts: true,
-		mobileEmulationEnabled: 'true',
-		handlesAlerts: true,
-		autoAcceptAlerts: true,
-		acceptInsecureCerts: true,
-		unexpectedAlertBehaviour: 'accept',
-		extendedDebugging: true,
-		loggingPrefs: {
-			'driver': 'INFO',
-			'browser': 'INFO'
-		},
-		tags:[
-			'@lv'
-		],
-		default_content_setting_values: {
-			geolocation: 2
-		},
-		chromeOptions: {
-			args: [
-				'--headless',
-				//'--use-mobile-user-agent',
-				'--incognito',
-				//--install-chrome-app
-				'--fast-start',
-				'--slow-connections-only',
-				//'--user-data-dir=/tmp/',
-				//'start-fullscreen',
-				'--no-sandbox' ]
-		}
-	},
-
-	phantomjs: { browserName: 'phantomjs' },
-
 	//Windows
 	Windows10_Chrome_v68: {
 		browserName: 'chrome',
@@ -49,7 +9,7 @@ const CAP_LIST = {
 		version: '68.0',
 		build: 'Windows10_Chrome_v68',
 		locationContextEnabled: true,
-		extendedDebugging: true,
+		//extendedDebugging: true,
 		handlesAlerts: true,
 		pageLoadStrategy: 'normal',
 		autoAcceptAlerts: true,
@@ -63,8 +23,8 @@ const CAP_LIST = {
 	Windows10_Chrome_v67: {
 		browserName: 'chrome',
 		platform: 'Windows 10',
-		version: '68.0',
-		build: 'Windows10_Chrome_v68',
+		version: '67.0',
+		build: 'Windows10_Chrome_v67',
 		locationContextEnabled: true,
 		handlesAlerts: true,
 		pageLoadStrategy: 'normal',
@@ -75,6 +35,21 @@ const CAP_LIST = {
 		tags:['@lv'],
 		exclude:[],
 		default_content_setting_values: { geolocation: 1 }
+	},
+	Windows7_Chrome_v67: {
+		browserName: 'chrome',
+		build: 'Windows7_Chrome_v67',
+		platform: 'Windows 7',
+		version: '67.0',
+		locationContextEnabled: true,
+		handlesAlerts: true,
+		pageLoadStrategy: 'normal',
+		autoAcceptAlerts: true,
+		acceptSslCerts: true,
+		acceptInsecureCerts: true,
+		unexpectedAlertBehaviour: 'accept',
+		extendedDebugging: true,
+		tags:['@lv'],
 	},
 	Windows10_IE_v11: {
 		browserName: 'internet explorer',
@@ -89,7 +64,7 @@ const CAP_LIST = {
 		autoAcceptAlerts: true,
 		acceptSslCerts: true,
 		unexpectedAlertBehaviour: 'accept',
-		extendedDebugging: true,
+		//extendedDebugging: true,
 		tags:['@lv'],
 		exclude: [],
 	},
@@ -155,6 +130,22 @@ const CAP_LIST = {
 	},
 
 	//MacOS
+	MAC10_14_Safari_v12: {
+		browserName: "safari",
+		build: 'MAC10_14_Safari_v12',
+		platform: 'macOS 10.14',
+		version: '12.0',
+		locationContextEnabled: true,
+		handlesAlerts: true,
+		pageLoadStrategy: 'normal',
+		autoAcceptAlerts: true,
+		acceptSslCerts: true,
+		// acceptInsecureCerts: true,
+		unexpectedAlertBehaviour: 'accept',
+		extendedDebugging: true,
+		tags:['@lv'],
+		exclude: [],
+	},
 	MAC10_13_Safari_v11: {
 		browserName: "safari",
 		build: 'MAC10_13_Safari_v11',
@@ -165,9 +156,24 @@ const CAP_LIST = {
 		pageLoadStrategy: 'normal',
 		autoAcceptAlerts: true,
 		acceptSslCerts: true,
-		acceptInsecureCerts: true,
 		unexpectedAlertBehaviour: 'accept',
+		tags:['@lv'],
+		exclude: [],
+	},
+
+	MAC10_13_Chrome_latest: {
+		browserName: 'chrome',
+		platform: 'macOS 10.13',
+		version: 'latest',
+		build: 'MAC10.13_Chrome_latest',
 		extendedDebugging: true,
+		locationContextEnabled: true,
+		handlesAlerts: true,
+		pageLoadStrategy: 'normal',
+		autoAcceptAlerts: true,
+		acceptSslCerts: true,
+		//acceptInsecureCerts: true,
+		unexpectedAlertBehaviour: 'accept',
 		tags:['@lv'],
 		exclude: [],
 	},
@@ -190,7 +196,7 @@ const CAP_LIST = {
 	//TODO macOS - firefox, chrome
 	iPad_Air_Simulator_Safari_v11: {
 		browserName: 'Safari',
-		appiumVersion: '1.9.1',
+		appiumVersion: '1.7.2',
 		deviceName: 'iPad Air Simulator',
 		build: 'iPad_Air_Simulator_Safari_v11',
 		autoAcceptAlerts: 'true',
@@ -213,24 +219,20 @@ const CAP_LIST = {
 	//iOS
 	iPhone_7_Safari_v11: {
 		browserName: 'Safari',
-		appiumVersion: '1.9.1',
+		appiumVersion: '1.8.1',
 		deviceName: 'iPhone 7 Simulator',
 		build: 'iPhone_7_Safari',
 		autoAcceptAlerts: 'true',
 		locationContextEnabled: true,
-		handlesAlerts: true,
-		locationServicesEnabled: true,
-		locationServicesAuthorized: true,
-		unexpectedAlertBehaviour: 'accept',
 		deviceOrientation: 'portrait',
-		platformVersion: '11.2',
+		platformVersion: '11.3',
 		platformName: 'iOS',
 		tags:['@sv'],
 		exclude: [],
 	},
 	iPhone_8_Safari_v11: {
 		browserName: 'Safari',
-		appiumVersion: '1.9.1',
+		appiumVersion: '1.7.2',
 		deviceName: 'iPhone 8 Simulator',
 		build: 'iPhone8_Simulator_Safari_v11',
 		autoAcceptAlerts: 'true',
@@ -245,7 +247,6 @@ const CAP_LIST = {
 		tags:['@sv'],
 		exclude: [],
 	},
-
 
 	//Android
 	Android_GoogleAPI_Chrome: {
@@ -326,6 +327,25 @@ const CAP_LIST = {
 		tags: ['@sv'],
 		exclude: []
 	},
+	Samsung_Galaxy_TabA_10_Emulator_Chrome: {
+		browserName: 'Chrome',
+		appiumVersion: '1.8.1',
+		deviceName: 'Samsung Galaxy Tab A 10 GoogleAPI Emulator',
+		build: 'Samsung_Galaxy_TabA_10_Emulator_Chrome',
+		automationName: 'uiautomator2',
+		autoAcceptAlerts: 'true',
+		locationContextEnabled: true,
+		autoGrantPermissions: true,
+		handlesAlerts: true,
+		locationServicesAuthorized: true,
+		locationServicesEnabled: true,
+		unexpectedAlertBehaviour: 'accept',
+		deviceOrientation: 'portrait',
+		platformVersion: '7.1',
+		platformName: 'Android',
+		tags: ['@lv'],
+		exclude: []
+	},
 };
 
 function applyExclusionRules(caps_list,exclusion_rules) {
@@ -336,6 +356,7 @@ function applyExclusionRules(caps_list,exclusion_rules) {
 	// console.log(largeDevices,smallDevices);
 
 	for (let i = 0; i < exclusion_rules.length; i++) {
+
 		if( exclusion_rules[i].from ){
 
 			let device_keys = Object.keys(caps_list);
@@ -345,6 +366,11 @@ function applyExclusionRules(caps_list,exclusion_rules) {
 			for (let j = 0; j < from_array.length; j++) {
 
 				if( from_array[j] == 'all' ){
+					for( let cap in caps_list ) {
+						if( caps_list[cap].exclude ){
+							caps_list[cap].exclude.push(exclusion_rules[i].test);
+						}
+					}
 					continue;
 				}
 
@@ -394,42 +420,6 @@ function applyExclusionRules(caps_list,exclusion_rules) {
 	return caps_list;
 }
 
-/*
-
-		{
-			browserName: 'chrome',
-			platform: 'macOS 10.12',
-			version: 'latest',
-			build: `MAC_CHROME SV (Small View) - ${process.env.USER} Local Environment`,
-			locationContextEnabled: true,
-			pageLoadStrategy: 'normal',
-			acceptSslCerts: true,
-			mobileEmulationEnabled: 'true',
-			handlesAlerts: true,
-			autoAcceptAlerts: true,
-			acceptInsecureCerts: true,
-			unexpectedAlertBehaviour: 'accept',
-			extendedDebugging: true,
-			loggingPrefs: {
-				'driver': 'INFO',
-				'browser': 'INFO'
-			},
-			tags:[
-				'@sv'
-			],
-			default_content_setting_values: {
-				geolocation: 2
-			},
-			chromeOptions: {
-				args: [
-					'--incognito',
-					'--fast-start',
-					'--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53',
-					'--slow-connections-only',
-					'--no-sandbox' ]
-			}
-		}
- */
 /**
  * Create an array of desired capabilities for wdio's config.
  *
@@ -444,27 +434,7 @@ function applyExclusionRules(caps_list,exclusion_rules) {
  *
  * Questions:
  * 		Cap version: is this the OS version or the browser version, seems very important.
- * 	Usage:
- * 		//wdio.config.js
- * 		require('babel-register');
- * 		const devices = require('./browser-caps').getCaps(process.env.CAPS || 'all');
- * 		capabilities: devices,
- *
- * @param {String} capabilities
- /**
- * Create an array of desired capabilities for wdio's config.
- *
- * Capabilities are passed as a string containing a comma-separated list of browser names.
- *
- * TODO - fetch caps directly from sauce labs
- * TODO - involve cap selection based on analytics
- *
- * Note about Caps:
- * 		All of the caps include a tag, example: tags:['@sv']
- * 		All caps include a build
- *
- * Questions:
- * 		Cap version: is this the OS version or the browser version, seems very important.
+ *  https://code.bestbuy.com/wiki/display/PUB/Test+Defects+Tracker
  * 	Usage:
  * 		//wdio.config.js
  * 		require('babel-register');
@@ -475,19 +445,10 @@ function applyExclusionRules(caps_list,exclusion_rules) {
  */
 function getCaps(capabilities){
 	if (typeof capabilities !== 'string' || capabilities.length === 0) {
-
-		return [ CAP_LIST.default ];
+		return [ CAP_LIST.MAC10_13_Chrome_latest ];
 	}
 
-	const browsers = capabilities.toLowerCase().split(',');
-
-	if( browsers.includes('default') ){
-		return [ CAP_LIST.default ];
-	}
-
-	if( browsers.includes('raw') ){
-		return CAP_LIST;
-	}
+	const browsers = capabilities.replace(/\s+/, "").toLowerCase().split(',');
 
 	if( browsers.includes('list') ){
 		let caps_keys = Object.keys(CAP_LIST);
@@ -506,13 +467,24 @@ function getCaps(capabilities){
 	}
 
 	//process inclusion of test specs
-	let caps = applyExclusionRules(CAP_LIST,excludedTests);
+	let caps;
+	if( excludedTests ){
+		caps = applyExclusionRules(CAP_LIST,excludedTests);
+	} else {
+		caps = CAP_LIST;
+	}
 
 	let used_caps = [];
 	for( let cap in caps ){
-		if(browsers.includes(cap.toLowerCase()) || browsers.includes('all') ){
-			//console.log( cap );
+		if(browsers.includes('all') ){
 			used_caps.push(caps[cap]);
+		} else {
+			for (let i = 0; i < browsers.length; i++) {
+				if( cap.toLowerCase().indexOf(browsers[i]) > -1 ){
+					used_caps.push(caps[cap]);
+					break;
+				}
+			}
 		}
 	}
 
@@ -521,10 +493,20 @@ function getCaps(capabilities){
 		process.exit(1);
 	} else {
 		//TODO print general stats about what is being tested
-		//console.log(`Number of Caps: ${caps.length}`);
+		 //console.log(`Number of Caps: ${caps.length}`);
 		//console.log( caps );
 	}
-	//console.log(used_caps);
+
+	if( used_caps.length == 1 && process.env.LIMIT ){
+
+		if( parseInt(process.env.LIMIT) && process.env.LIMIT > 0 && process.env.LIMIT <= 100 ){
+			let tmp = used_caps[0];
+			for (let i = 0; i < parseInt(process.env.LIMIT); i++) {
+				used_caps.push(tmp);
+			}
+		}
+	}
+
 	return used_caps;
 }
 

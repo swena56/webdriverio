@@ -7,31 +7,16 @@ if( size == 'sv' ){
 	userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53';
 }
 
-//node_modules/puppeteer/.local-chromium/mac-599821/chrome-mac/Chromium.app/Contents/MacOS/Chromium
-let glob = require( 'glob' );
-let chromeBin = glob.sync( 'node_modules/puppeteer/.local-chromium/**/Chromium')[0] ||
-	glob.sync( 'node_modules/puppeteer/.local-chromium/**/chrome')[0] ||
-	process.env.CHROME_BIN ||
-	'node_modules/puppeteer/.local-chromium/linux-599821/chrome-linux/chrome' ||
-	new Error("Need chromium binary, try npm install to use puppeteer or set CHROME_BIN env");
+const getChromeCap = require('./base.chrome.conf').getChromeCap;
+let devices = [];
+devices.push(
+	getChromeCap({
+		devtoolsPort: 9222,
+		binary: `${require('puppeteer').executablePath()}`,
+		userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36'
+	})
+);
 
-let base = {
-	browserName: 'chrome',
-	build: `puppeteer`,
-	tags:[ ( size == 'sv' ) ? '@sv' : '@lv' ],
-	chromeOptions: {
-		binary: chromeBin,
-		args: [
-			//'--headless',
-			`--user-agent=${userAgent}`,
-			'--remote-debugging-port=9222',
-			'--disable-gpu',
-			'--incognito',
-			'--no-sandbox',
-			'--verbose',
-		]
-	},
-};
 //ssh://git@git.bestbuy.com/shop/shopviewteam-jenkins-slave.git
 let count = 0;
 
@@ -107,6 +92,7 @@ exports.config = {
             downloadThroughput: 750e2,
             uploadThroughput: 250e2
         });
+
 	    browser.on('Network.responseReceived', (params) => {
 	        if( params.response.status >= 500 ){
 	        	console.log(`Loaded ${params.response.status}`);

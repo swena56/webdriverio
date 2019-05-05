@@ -1,30 +1,7 @@
 const video = require('wdio-video-reporter');
-
-let excludes = [];
-if( process.env.EXCLUDES ){
-
-	let glob = require( 'glob' );
-	let tests = glob.sync( 'test/**/*.spec.js' );
-
-	let items = process.env.EXCLUDES.split(',');
-	items.forEach((i)=>{
-
-		let search_string = i.trim();
-		let to_exclude = tests.filter((o)=>o.toLowerCase().includes(search_string));
-		excludes = excludes.concat(to_exclude);
-	});
-
-	excludes = excludes.map((o)=> `./${o}`);
-}
-
-let specs = [ process.env.SPECS || './test/**/*.spec.js' ];
-if( process.env.SEARCH ){
-    let glob = require( 'glob' );
-    let tests = glob.sync( 'test/**/*.spec.js' );
-    specs = tests.filter( 
-        o => o.toLowerCase().includes(process.env.SEARCH.toLowerCase())
-    );
-}
+const configUtil = require('./config-util').configUtil;
+const excludes = configUtil.getExcludes();
+const specs = configUtil.getSpecs();
 
 exports.config = {
 	runner: 'local',
