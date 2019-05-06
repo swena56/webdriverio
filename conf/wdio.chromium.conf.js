@@ -15,7 +15,7 @@ if( process.env.CAPS && process.env.CAPS.length ){
         }));
     }
 } else {
-    devices.push(getChromeCap({ binary: `${require('puppeteer').executablePath()}` }));
+    devices.push(getChromeCap());
 }
 
 exports.config = {

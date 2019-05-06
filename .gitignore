@@ -5,3 +5,5 @@ node_modules
 /junit-results
 .idea/
 /screenshots
+selenium-standalone.txt
+/logs

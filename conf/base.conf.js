@@ -1,5 +1,6 @@
-const video = require('wdio-video-reporter');
-const configUtil = require('./config-util').configUtil;
+require("@babel/register");
+//const video = require('wdio-video-reporter');
+const configUtil = require('./config-util');
 const excludes = configUtil.getExcludes();
 const specs = configUtil.getSpecs();
 
@@ -7,19 +8,31 @@ exports.config = {
 	runner: 'local',
 	baseUrl: process.env.BASE_URL || 'https://webdriver.io/docs/api.html',
 	exclude: excludes,
+    outputDir: './../',
 	services:[],
 	specs: specs,
 	framework: 'mocha',
-    //reporters: ['dot','spec','junit','allure','video'],
-	reporters: ['spec',
-	// [ video, {
-	//   outputDir:'/',
- //      saveAllVideos: false,       // If true, also saves videos for successful test cases
- //      videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
- //    }],
+    reporters: [ 
+        'dot',
+        'spec',
+        ['junit', {
+            outputDir: 'junit-results',
+        }],
+        ['allure', {
+            outputDir: 'allure-results',
+            //disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: true,
+        }],
+        /*[ video, {
+            outputDir:'/',
+            saveAllVideos: false,       // If true, also saves videos for successful test cases
+            videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+        }],*/
     ],
-	logLevel: process.env.LOG_LEVEL || 'silent',
-    bail: 0,
+    debug: false,
+    seleniumLogs: './../logs/',
+	logLevel: process.env.LOG_LEVEL || 'error', //silent | verbose | command | data | result | error
+    bail: 0, //parseInt(process.env.WAIT_FOR_TIMEOUT) && process.env.WAIT_FOR_TIMEOUT > 0 || 0,
     waitforTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT) || 10000,
     connectionRetryTimeout: parseInt(process.env.CONN_RETRY_TIMEOUT) || 90000,
     connectionRetryCount: parseInt(process.env.CONN_RETRY_COUNT) || 3,
@@ -27,15 +40,102 @@ exports.config = {
     maxInstances: parseInt(process.env.MAX_INSTANCES) || 10 ,
     mochaOpts: {
         ui: 'bdd',
-        timeout: 99999999,
+        timeout: false,
+        compilers: ['js:@babel/register'],
     },
     filesToWatch: [
         './test/misc/*.spec.js'
     ],
-	screenshotPath: process.env.SCREENSHOT_PATH || './errorShots/',
-	
+	screenshotPath: process.env.SCREENSHOT_PATH || './../errorShots/',
+	plugins: {
+        'wdio-screenshot': {}
+    },
+
+    beforeSession: function (config, capabilities, specs) {
+        //console.log(capabilities,config);
+        //TODO sv and large
+        if( config ){
+
+        }
+        // let tagFlag = `${capabilities.tags}`;
+
+        // if( !config.mochaOpts.grep ){
+        //     config.mochaOpts.grep = '@both';
+        // }
+
+        // if((tagFlag == config.mochaOpts.grep)|(config.mochaOpts.grep == "@both")) {
+        //     config.mochaOpts.grep = `${capabilities.tags}`;
+        // } else {
+        //     //process.exit(0)
+        // }
+    },
+
+    beforeSuite: function (suite) {
+    
+    },
+
 	before: function (capabilities, specs) {
         require('./prepare-browser').configure(browser);
+    },
+
+    beforeHook: function () {
+    
+    },
+
+    beforeTest: function (test) {
+
+    },
+
+    afterCommand: function(commandName, args, result, error) {
+        if( ! process.env.EXCLUDE_ALLURE && error ){
+            if( ! process.env.EXCLUDE_URL ){
+                AllureAdditions.addLatestUrl(`${commandName} ${args || ''} `,`Url at Error: ${commandName} ${error || ''} ${result || ''}` );
+            }
+        }
+    },
+
+    afterHook: function () {
+        //TODO mark test pending if hook failed 
+         const AllureAdditions = require('./allure-additions');
+
+        if ( ! process.env.EXCLUDE_ALLURE ) {
+
+            if( ! process.env.EXCLUDE_LIVE_CONFIG ){ 
+                AllureAdditions.addLiveConfig();
+            }
+
+            if( ! process.env.EXCLUDE_URL ){
+                AllureAdditions.addLatestUrl();
+            }
+
+            if( ! process.env.EXCLUDE_DEBUG ){
+                AllureAdditions.addDebugDetails(false); 
+            } 
+
+            if( this.services.includes('sauce') && ! process.env.EXCLUDE_VIDEO ){
+                AllureAdditions.addSauceLabsLinks(true,"show video");
+            }
+
+            if( ! process.env.EXCLUDE_SCREENSHOT ){
+                AllureAdditions.addScreenShot(this.screenshotPath, true);
+            }
+        }       
+    },
+
+    afterTest: function(test){
+       
+    },
+
+    after: function (result, capabilities, specs) {
+    
+    },
+
+    afterSession: function (config, capabilities, specs) {
+
+    },
+
+    afterSuite: function (suite) {
+    
     },
 
 	onPrepare: function() {
@@ -46,123 +146,7 @@ exports.config = {
 		console.log(`Done: ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}`);
 	},
 
-	 //
-    // =====
-    // Hooks
-    // =====
-    // WebdriverIO provides several hooks you can use to interfere with the test process in order to enhance
-    // it and to build services around it. You can either apply a single function or an array of
-    // methods to it. If one of them returns with a promise, WebdriverIO will wait until that promise got
-    // resolved to continue.
-    /**
-     * Gets executed once before all workers get launched.
-     * @param {Object} config wdio configuration object
-     * @param {Array.<Object>} capabilities list of capabilities details
-     */
-    // onPrepare: function (config, capabilities) {
-    // },
-    /**
-     * Gets executed just before initialising the webdriver session and test framework. It allows you
-     * to manipulate configurations depending on the capability or spec.
-     * @param {Object} config wdio configuration object
-     * @param {Array.<Object>} capabilities list of capabilities details
-     * @param {Array.<String>} specs List of spec file paths that are to be run
-     */
-    // beforeSession: function (config, capabilities, specs) {
-    // },
-    /**
-     * Gets executed before test execution begins. At this point you can access to all global
-     * variables like `browser`. It is the perfect place to define custom commands.
-     * @param {Array.<Object>} capabilities list of capabilities details
-     * @param {Array.<String>} specs List of spec file paths that are to be run
-     */
-    // before: function (capabilities, specs) {
-    // },
-    /**
-     * Runs before a WebdriverIO command gets executed.
-     * @param {String} commandName hook command name
-     * @param {Array} args arguments that command would receive
-     */
-    // beforeCommand: function (commandName, args) {
-    // },
+    onReload: function(oldSessionId, newSessionId) {
     
-    /**
-     * Hook that gets executed before the suite starts
-     * @param {Object} suite suite details
-     */
-    // beforeSuite: function (suite) {
-    // },
-    /**
-     * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-     * @param {Object} test test details
-     */
-    // beforeTest: function (test) {
-    // },
-    /**
-     * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
-     * beforeEach in Mocha)
-     */
-    // beforeHook: function () {
-    // },
-    /**
-     * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
-     * afterEach in Mocha)
-     */
-    // afterHook: function () {
-    // },
-    /**
-     * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-     * @param {Object} test test details
-     */
-    // afterTest: function (test) {
-    // },
-    /**
-     * Hook that gets executed after the suite has ended
-     * @param {Object} suite suite details
-     */
-    // afterSuite: function (suite) {
-    // },
-    
-    /**
-     * Runs after a WebdriverIO command gets executed
-     * @param {String} commandName hook command name
-     * @param {Array} args arguments that command would receive
-     * @param {Number} result 0 - command success, 1 - command error
-     * @param {Object} error error object if any
-     */
-    // afterCommand: function (commandName, args, result, error) {
-    // },
-    /**
-     * Gets executed after all tests are done. You still have access to all global variables from
-     * the test.
-     * @param {Number} result 0 - test pass, 1 - test fail
-     * @param {Array.<Object>} capabilities list of capabilities details
-     * @param {Array.<String>} specs List of spec file paths that ran
-     */
-    // after: function (result, capabilities, specs) {
-    // },
-    /**
-     * Gets executed right after terminating the webdriver session.
-     * @param {Object} config wdio configuration object
-     * @param {Array.<Object>} capabilities list of capabilities details
-     * @param {Array.<String>} specs List of spec file paths that ran
-     */
-    // afterSession: function (config, capabilities, specs) {
-    // },
-    /**
-     * Gets executed after all workers got shut down and the process is about to exit.
-     * @param {Object} exitCode 0 - success, 1 - fail
-     * @param {Object} config wdio configuration object
-     * @param {Array.<Object>} capabilities list of capabilities details
-     * @param {<Object>} results object containing test results
-     */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
-    /**
-    * Gets executed when a refresh happens.
-    * @param {String} oldSessionId session ID of the old session
-    * @param {String} newSessionId session ID of the new session
-    */
-    //onReload: function(oldSessionId, newSessionId) {
-    //}
+    },
 };

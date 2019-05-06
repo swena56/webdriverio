@@ -3,12 +3,50 @@ const base = require('./base.conf');
 //example: const getChromeCap = require('./base.chrome.conf').getChromeCap;
 //TODO '--incognito', '--no-sandbox', '--auto-open-devtools-for-tabs','--verbose',
 
+const DEFAULT_ARGS = [
+	//'--disable-background-networking',
+	'--disable-background-timer-throttling',
+	'--disable-backgrounding-occluded-windows',
+	'--disable-breakpad',
+	'--disable-client-side-phishing-detection',
+	'--disable-default-apps',
+	'--disable-dev-shm-usage',
+	'--disable-extensions',
+	'--disable-features=site-per-process',
+	'--disable-hang-monitor',
+	'--disable-ipc-flooding-protection',
+	'--disable-popup-blocking',
+	'--disable-prompt-on-repost',
+	'--disable-renderer-backgrounding',
+	'--disable-sync',
+	'--disable-translate',
+	'--metrics-recording-only',
+	'--no-first-run',
+	'--safebrowsing-disable-auto-update',
+	'--enable-automation',
+	'--password-store=basic',
+	'--disable-single-click-autofill',
+
+	//untested
+	'--disable-popup-blocking',
+	'--disable-geolocation',
+	'--window-size=1920,1080',
+	'--no-sandbox',
+	'--disable-infobars',
+	'--fast-start',
+	'--disable-setuid-sandbox',
+	'--crash-dumps-dir=/tmp',
+];
+
 exports.getChromeCap = function( 
 		options={ mobileEmulation: false, userAgent:false , headless: false, binary:false, devtoolsPort: 0  },
 		additionalArgs = [], 
 	){
 
-	let chromeOptions = {};
+	let chromeOptions = {
+		//prefs: {'profile.managed_default_content_settings.geolocation': 2},
+	};
+
     let args = [ 
         '--disable-infobars',
 		'--fast-start',

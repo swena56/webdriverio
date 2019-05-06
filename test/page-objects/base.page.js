@@ -1,5 +1,3 @@
-const WAIT_TIME = 180000;
-
 export default class BasePage {
 
 	loadPage (url='/') {
@@ -8,7 +6,8 @@ export default class BasePage {
 	}
 
 	waitForPageLoad(extraWaitTime=0) {
-		browser.pause(5000);
+		const WAIT_TIME = 180000;
+
 		browser.waitUntil(
 			() => browser.execute('return document.readyState') === 'complete', 
 			WAIT_TIME,

@@ -1,10 +1,12 @@
 "use strict";
 
+const logger = require( '@wdio/logger' ).default( browser.config.capabilities.browserName );
+
 exports.configure = function (browser) {
 
-	var chai = require('chai');
-	var options = {defaultWait: 35000};
-	var chaiWebdriver = require('chai-webdriverio').default;
+	const chai = require('chai');
+	const options = {defaultWait: 35000};
+	const chaiWebdriver = require('chai-webdriverio').default;
 	chai.use(chaiWebdriver(browser,options));
 	global.expect = chai.expect;
 	global.assert = require('assert');
@@ -13,8 +15,6 @@ exports.configure = function (browser) {
 	chai.should();
 
 	require("@babel/register");
-
-	//global.microsoft = require('../test/page-objects/microsoft.page');
 
 	browser.addCommand('highlight', function(selector, color='red') {
 
@@ -73,6 +73,47 @@ exports.configure = function (browser) {
             }
         })
     });
+
+	browser.addCommand( 'assert', function ( message = false ) {
+		if( ! this ){
+			throw new Error('Calling assert on undefined');
+		}
+		this.isExisting().should.equal( true, ( message ) ? `${message} - selector: ${this.selector} does not exist` : `selector: ${this.selector} does not exist` );
+		return this;
+	}, true );
+
+	browser.addCommand( 'injectClick', function ( index = -1 ) {
+		this.assert();
+
+		if ( this.isExisting() ) {
+
+			const results = browser.execute( ( element, index ) => {
+				let clickMe = document.querySelector( element );
+
+				if ( index >= 0 ) {
+					clickMe = document.querySelectorAll( element )[index];
+				}
+
+				if ( clickMe ) {
+					clickMe.click();
+				}
+				return clickMe;
+			}, this.selector, index );
+
+			results.should.not.equal( null, `injectClick failed to click '${this.selector}'` );
+		}
+	}, true );
+	
+	browser.addCommand( 'getOsAndBrowserInformation', () => {
+		const details = [];
+		browser.capabilities.browserName && details.push( browser.capabilities.browserName );
+		browser.capabilities.version && details.push( browser.capabilities.version );
+		browser.capabilities.platformName && details.push( browser.capabilities.platformName );
+		browser.capabilities.platform && details.push( browser.capabilities.platform );
+		browser.capabilities.deviceName && details.push( browser.capabilities.deviceName );
+
+		return details.join( '-' );
+	} );
 
     /**
     * sets the web browser position, either left or right, based on personal config "browserPosition" setting
