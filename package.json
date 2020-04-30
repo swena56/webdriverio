@@ -31,7 +31,7 @@
     "allure-commandline": "^2.4.1",
     "chai": "^4.2.0",
     "chai-webdriverio": "^0.4.3",
-    "jquery": "3.2.1",
+    "jquery": "3.5.0",
     "mocha-tags": "^1.0.1",
     "node-rest-client": "^3.1.0",
     "pixelmatch": "^4.0.2",
